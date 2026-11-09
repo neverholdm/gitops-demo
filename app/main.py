@@ -3,7 +3,6 @@
 Provides basic status and health check endpoints for container lifecycle management.
 """
 
-from typing import Dict
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -14,7 +13,7 @@ app = FastAPI(
 
 
 @app.get("/", tags=["Status"])
-def read_root() -> Dict[str, str]:
+def read_root() -> dict[str, str]:
     """Root endpoint returning service status, version, and environment.
 
     Used by CD pipelines and users to verify current deployed release.
@@ -27,7 +26,7 @@ def read_root() -> Dict[str, str]:
 
 
 @app.get("/health", tags=["Health"])
-def health_check() -> Dict[str, str]:
+def health_check() -> dict[str, str]:
     """Lightweight health check endpoint.
 
     Used by Docker Compose and Kubernetes liveness/readiness probes.
