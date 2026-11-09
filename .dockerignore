@@ -1,0 +1,27 @@
+# 忽略 Python 缓存与字节码文件
+__pycache__
+*.py[cod]
+*$py.class
+
+# 忽略本地虚拟环境
+env/
+venv/
+.venv/
+
+# 忽略版本控制与 Git 目录（减小传输体积，保护提交隐私）
+.git/
+.gitignore
+
+# 忽略测试与代码覆盖率临时产物
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# 忽略本地配置与日志文件
+*.log
+.env
+Dockerfile*
+.dockerignore
+GITOPS_IMPLEMENTATION_PLAN.md
+agent.md

@@ -1,0 +1,32 @@
+services:
+  web:
+    # 动态镜像声明：支持通过环境变量 APP_IMAGE 注入，缺省为 GitHub Packages 镜像路径
+    image: ${APP_IMAGE:-ghcr.io/username/gitops-demo:latest}
+    container_name: gitops-web-app
+    
+    # 重启策略：非人工主动停止则永远保持运行（保证机器重启后服务自动拉起）
+    restart: unless-stopped
+    
+    # 宿主机与容器端口映射：暴露 8000 端口提供对外 RESTful API
+    ports:
+      - "8000:8000"
+      
+    # 业务环境变量注入
+    environment:
+      - PORT=8000
+      - ENVIRONMENT=production
+      
+    # 生产级日志防护：严格限制日志上限，避免长期运行导致宿主机磁盘写满崩溃
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"   # 单个日志文件上限 10MB
+        max-file: "3"     # 最多保留 3 个滚动历史日志文件
+
+    # 容器运行时健康检查（Liveness Probe）
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 30s       # 探测周期：每 30 秒探测一次
+      timeout: 3s         # 超时阈值：单次探测超过 3 秒判定超时
+      start_period: 5s    # 启动宽限期：容器启动 5 秒后才正式开始健康考核
+      retries: 3          # 容错上限：连续失败 3 次将容器标记为 unhealthy

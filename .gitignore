@@ -1,0 +1,19 @@
+# Python 运行字节码与缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# IDE 与操作系统临时配置
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 日志与本地密钥隔离
+*.log
+.env
