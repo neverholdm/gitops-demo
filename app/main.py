@@ -8,7 +8,7 @@ from fastapi import FastAPI
 app = FastAPI(
     title="GitOps Demo App",
     description="Lightweight business service for GitOps automated deployment pipeline",
-    version="v1.0.0",
+    version="v1.0.1",
 )
 
 
@@ -20,7 +20,7 @@ def read_root() -> dict[str, str]:
     """
     return {
         "status": "healthy",
-        "version": "v1.0.0",
+        "version": "v1.0.1",
         "environment": "production",
     }
 

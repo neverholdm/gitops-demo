@@ -1,0 +1,26 @@
+[Unit]
+Description=GitOps Continuous Deployment Webhook Receiver
+Documentation=https://github.com/neverholdm/gitops-demo
+After=network.target docker.service
+Wants=docker.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/gitops-app
+Environment="PYTHONUNBUFFERED=1"
+Environment="WEBHOOK_PORT=9000"
+# 支持在 /opt/gitops-app/.env 中安全注入 WEBHOOK_SECRET
+EnvironmentFile=-/opt/gitops-app/.env
+ExecStart=/usr/bin/python3 /opt/gitops-app/cd-receiver/receiver.py
+Restart=on-failure
+RestartSec=5s
+LimitNOFILE=65536
+
+# 日志直接送入 systemd journal，便于 journalctl 统一检索诊断
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gitops-cd
+
+[Install]
+WantedBy=multi-user.target
